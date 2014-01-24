@@ -72,15 +72,15 @@ func main() {
 	fmt.Fprintln(os.Stderr, "Called with difficulty:", difficulty)
 	quit := make(chan bool)
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	cores := runtime.NumCPU()*2
+	cores := int64( runtime.NumCPU()*2)
 	fmt.Fprintln(os.Stderr, "Running with", cores, "cores")
 	//	var wg sync.WaitGroup
 	go gitCount()
 	//	wg.Add(1)
-	for i:=0; i<=cores; i++{
-	rand.Seed(time.Now().UnixNano())
+	for i:=int64(0); i<=cores; i++{
+	rand.Seed(time.Now().UnixNano()*i)
 	seed := rand.Intn(100000000000000)
-	go gitMoney(difficulty, in, quit, seed*i)
+	go gitMoney(difficulty, in, quit, seed)
 	}
 	for {
 		select {
