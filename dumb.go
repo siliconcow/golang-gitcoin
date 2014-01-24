@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/jgrahamc/go-openssl/sha1"
-	//"crypto/sha1"
+	//"github.com/jgrahamc/go-openssl/sha1"
+	"crypto/sha1"
 	"fmt"
 	"io/ioutil"
 	"log"
