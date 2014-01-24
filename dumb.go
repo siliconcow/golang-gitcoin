@@ -1,8 +1,8 @@
 package main
 
 import (
-	//"github.com/jgrahamc/go-openssl/sha1"
-	"crypto/sha1"
+	"github.com/jgrahamc/go-openssl/sha1"
+	//"crypto/sha1"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -13,14 +13,12 @@ import (
 	"encoding/hex"
 	"runtime"
 )
+var hashes = 0
+var debug = true
 
 //func gitMoney(difficulty string,in []byte, w *sync.WaitGroup) {
 func gitMoney(difficulty string, in []byte, w chan bool) {
-	hashes := 0
-	now := time.Now()
-	start_second := now.Truncate(time.Second)
 	i := 0
-	debug := false
 	for {
 		//text := fmt.Sprintf("tree %s \n parent %s \n author CTF user <me@example.com> %s +0000 \n committer CTF user <me@example.com> %s +0000 \n Give me a Gitcoin\n $d", "tree", "parent", "time", counter)
 
@@ -41,19 +39,26 @@ func gitMoney(difficulty string, in []byte, w chan bool) {
 			break
 		}
 		hashes++
-		if debug == true {
-			now := time.Now()
-			end_second := now.Truncate(time.Second)
-			if end_second.After(start_second) {
-				fmt.Fprintln(os.Stderr, "hashes per second: %d \n", hashes)
-				start_second = end_second
-				hashes = 0
-			}
-		}
 		i++
 	}
 	w <- true
 
+}
+
+func gitCount() {
+	now := time.Now()
+	start_second := now.Truncate(time.Second)
+	for {
+		if debug == true {
+			now := time.Now()
+			end_second := now.Truncate(time.Second)
+			if end_second.After(start_second) {
+				fmt.Fprintln(os.Stderr, "hashes per second:", hashes)
+				start_second = end_second
+				hashes = 0
+			}
+		}
+	}
 }
 
 func main() {
@@ -66,8 +71,9 @@ func main() {
 	fmt.Fprintln(os.Stderr, "Called with difficulty:", difficulty)
 	quit := make(chan bool)
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	cores := runtime.NumCPU()
+	cores := runtime.NumCPU()*2
 	//	var wg sync.WaitGroup
+	go gitCount()
 	//	wg.Add(1)
 	for i:=0; i<=cores; i++{
 	go gitMoney(difficulty, in, quit)
