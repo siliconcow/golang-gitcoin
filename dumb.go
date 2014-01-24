@@ -36,7 +36,7 @@ func gitMoney(difficulty string, in []byte, w chan bool, i int) {
 		//cs := fmt.Sprintf("%x\n", h.Sum(nil))
 		cs := hex.EncodeToString(sum[:])
 		if cs < difficulty {
-			fmt.Printf("%s%s", in, t)
+			fmt.Printf("%s%s\n", in, t)
 			fmt.Fprintln(os.Stderr, "\nHash:", cs)
 			break
 		}
