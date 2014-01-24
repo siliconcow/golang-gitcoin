@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -eu
 
 if [ "$#" != 2 ]; then
@@ -41,22 +40,15 @@ solve() {
     timestamp=$(date +%s)
 
 
-	body="tree $tree
-parent $parent
-author CTF user <me@example.com> $timestamp +0000
-committer CTF user <me@example.com> $timestamp +0000
-
-Give me a Gitcoin"
+	body="tree $tree\nparent $parent\nauthor CTF user <me@example.com> $timestamp +0000\ncommitter CTF user <me@example.com> $timestamp +0000\nGive me a Gitcoin\n"
 
 	# See http://git-scm.com/book/en/Git-Internals-Git-Objects for
 	# details on Git objects.
-	new_body=$(/root/projects/level1/dumb $difficulty <<<body)
-	sha1=$(git hash-object -t commit --stdin <<< "$body")
-	    echo
-	    echo "Mined a Gitcoin with commit: $sha1"
-	    git hash-object -t commit --stdin -w <<< "$body"  > /dev/null
-	    git reset --hard "$sha1" > /dev/null
-	    break
+	new_body="$( echo $body | /root/projects/level1/dumb $difficulty | tee text.txt)"
+	sha1=$(cat test.txt | git hash-object -t commit --stdin)
+	echo "Mined a Gitcoin with commit: $sha1"
+	cat test.txt | git hash-object -w -t commit --stdin > /dev/null
+	git reset --hard "$sha1" > /dev/null
 }
 
 reset() {
@@ -77,8 +69,10 @@ else
 fi
 
 while true; do
+   # reset
     prepare_index
     solve
+    echo "testing"
     if git push origin master; then
 	echo "Success :)"
 	break
