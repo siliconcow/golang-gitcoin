@@ -18,9 +18,8 @@ var hashes = 0
 var debug = true
 
 //func gitMoney(difficulty string,in []byte, w *sync.WaitGroup) {
-func gitMoney(difficulty string, in []byte, w chan bool) {
-	rand.Seed(time.Now().UnixNano())
-	i := rand.Intn(10000000000)
+func gitMoney(difficulty string, in []byte, w chan bool, i int) {
+	fmt.Fprintln(os.Stderr, "Seeded with: ", i)
 	for {
 		//text := fmt.Sprintf("tree %s \n parent %s \n author CTF user <me@example.com> %s +0000 \n committer CTF user <me@example.com> %s +0000 \n Give me a Gitcoin\n $d", "tree", "parent", "time", counter)
 
@@ -74,11 +73,14 @@ func main() {
 	quit := make(chan bool)
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	cores := runtime.NumCPU()*2
+	fmt.Fprintln(os.Stderr, "Running with", cores, "cores")
 	//	var wg sync.WaitGroup
 	go gitCount()
 	//	wg.Add(1)
 	for i:=0; i<=cores; i++{
-	go gitMoney(difficulty, in, quit)
+	rand.Seed(time.Now().UnixNano())
+	seed := rand.Intn(100000000000000)
+	go gitMoney(difficulty, in, quit, seed*i)
 	}
 	for {
 		select {
