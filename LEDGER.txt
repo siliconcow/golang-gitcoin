@@ -1,11 +1,23 @@
 Private Gitcoin ledger
 ==============
+<<<<<<< HEAD
 gdb: 23
 siddarth: 42
 christian: 32
 andy: 14
+=======
+gdb: 25
+siddarth: 44
+christian: 30
+andy: 12
+>>>>>>> 0000005073fe902d838cb0e5f9b31c4bdba040c8
 nelhage: 45
 carl: 30
 ludwig: 20
 pa: 30
+<<<<<<< HEAD
 evan: 1
+=======
+jim: 2
+evan: 2
+>>>>>>> 0000005073fe902d838cb0e5f9b31c4bdba040c8

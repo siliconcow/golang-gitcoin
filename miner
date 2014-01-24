@@ -1,4 +1,8 @@
 #!/bin/bash
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0000005073fe902d838cb0e5f9b31c4bdba040c8
 set -eu
 
 if [ "$#" != 2 ]; then
@@ -39,6 +43,7 @@ solve() {
     parent=$(git rev-parse HEAD)
     timestamp=$(date +%s)
 
+<<<<<<< HEAD
 
 	body="tree $tree\nparent $parent\nauthor CTF user <me@example.com> $timestamp +0000\ncommitter CTF user <me@example.com> $timestamp +0000\nGive me a Gitcoin\n"
 
@@ -49,6 +54,34 @@ solve() {
 	echo "Mined a Gitcoin with commit: $sha1"
 	cat test.txt | git hash-object -w -t commit --stdin > /dev/null
 	git reset --hard "$sha1" > /dev/null
+=======
+    counter=0
+
+    while let counter=counter+1; do
+	echo -n .
+
+	body="tree $tree
+parent $parent
+author CTF user <me@example.com> $timestamp +0000
+committer CTF user <me@example.com> $timestamp +0000
+
+Give me a Gitcoin
+
+$counter"
+
+	# See http://git-scm.com/book/en/Git-Internals-Git-Objects for
+	# details on Git objects.
+	sha1=$(git hash-object -t commit --stdin <<< "$body")
+
+	if [ "$sha1" "<" "$difficulty" ]; then
+	    echo
+	    echo "Mined a Gitcoin with commit: $sha1"
+	    git hash-object -t commit --stdin -w <<< "$body"  > /dev/null
+	    git reset --hard "$sha1" > /dev/null
+	    break
+	fi
+    done
+>>>>>>> 0000005073fe902d838cb0e5f9b31c4bdba040c8
 }
 
 reset() {
@@ -69,10 +102,15 @@ else
 fi
 
 while true; do
+<<<<<<< HEAD
    # reset
     prepare_index
     solve
     echo "testing"
+=======
+    prepare_index
+    solve
+>>>>>>> 0000005073fe902d838cb0e5f9b31c4bdba040c8
     if git push origin master; then
 	echo "Success :)"
 	break

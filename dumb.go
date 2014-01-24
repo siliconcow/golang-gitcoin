@@ -31,7 +31,6 @@ func gitMoney(difficulty string, in []byte, w chan bool, i int) {
 		body := append(in, counter...)
 		fmt.Fprintf(h, "commit %d\x00", len(body))
 		h.Write(body)
-		fmt.Fprintf(h, "\n")
 		sum := h.Sum(nil)
 		//cs := fmt.Sprintf("%x\n", h.Sum(nil))
 		cs := hex.EncodeToString(sum[:])
