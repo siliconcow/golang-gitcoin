@@ -4,11 +4,12 @@ import (
 	"github.com/jgrahamc/go-openssl/sha1"
 	//"crypto/sha1"
 	"fmt"
+	"time"
+	"math/rand"
 	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
-	"time"
 	//"sync"
 	"encoding/hex"
 	"runtime"
@@ -18,7 +19,8 @@ var debug = true
 
 //func gitMoney(difficulty string,in []byte, w *sync.WaitGroup) {
 func gitMoney(difficulty string, in []byte, w chan bool) {
-	i := 0
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(10000000000)
 	for {
 		//text := fmt.Sprintf("tree %s \n parent %s \n author CTF user <me@example.com> %s +0000 \n committer CTF user <me@example.com> %s +0000 \n Give me a Gitcoin\n $d", "tree", "parent", "time", counter)
 
