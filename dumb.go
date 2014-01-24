@@ -15,7 +15,7 @@ import (
 	"runtime"
 )
 var hashes = 0
-var debug = false
+var debug = true
 
 //func gitMoney(difficulty string,in []byte, w *sync.WaitGroup) {
 func gitMoney(difficulty string, in []byte, w chan bool, i int) {
@@ -30,18 +30,19 @@ func gitMoney(difficulty string, in []byte, w chan bool, i int) {
 		h := sha1.New()
 		body := append(in, counter...)
 		fmt.Fprintf(h, "commit %d\x00", len(body))
-		sum := h.Sum(body)
+		h.Write(body)
+		sum := h.Sum(nil)
 		//cs := fmt.Sprintf("%x\n", h.Sum(nil))
 		cs := hex.EncodeToString(sum[:])
 		if cs < difficulty {
 			fmt.Printf("%s%s", in, t)
 			fmt.Fprintln(os.Stderr, "\nHash:", cs)
-			w <- true
 			break
 		}
 		hashes++
 		i++
 	}
+	w <- true
 
 }
 
