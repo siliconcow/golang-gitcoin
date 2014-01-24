@@ -30,19 +30,18 @@ func gitMoney(difficulty string, in []byte, w chan bool, i int) {
 		h := sha1.New()
 		body := append(in, counter...)
 		fmt.Fprintf(h, "commit %d\x00", len(body))
-		h.Write(body)
-		sum := h.Sum(nil)
+		sum := h.Sum(body)
 		//cs := fmt.Sprintf("%x\n", h.Sum(nil))
 		cs := hex.EncodeToString(sum[:])
 		if cs < difficulty {
 			fmt.Printf("%s%s", in, t)
 			fmt.Fprintln(os.Stderr, "\nHash:", cs)
+			w <- true
 			break
 		}
 		hashes++
 		i++
 	}
-	w <- true
 
 }
 
