@@ -15,7 +15,7 @@ import (
 	"runtime"
 )
 var hashes = 0
-var debug = true
+var debug = false
 
 //func gitMoney(difficulty string,in []byte, w *sync.WaitGroup) {
 func gitMoney(difficulty string, in []byte, w chan bool, i int) {
